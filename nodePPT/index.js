@@ -24,10 +24,22 @@ var defaultJSON = {
     highlightStyle: 'monokai_sublime',
     base: "http://qdemo.sinaapp.com/"
 };
-
+var renderer = new marked.Renderer();
+renderer.code = function (code, language) {
+    if(code.match(/^sequenceDiagram/) || code.match(/^graph/)){
+        return '<div class="mermaid">' + code + '</div>';
+    }
+    else if (code.match(/^chart/)) {
+        var style = code.match(/^chart(.*?)[\n\r]/)[1] || '';
+        return '<div class="echarts" style="' + style + '">' + code.replace(/^chart(.*?)[\n\r]/, '') + '</div>';
+    }
+    else{
+        return '<pre><code>' + code + '</code></pre>';
+    }
+};
 marked.setOptions({
     gfm: true,
-
+    renderer: renderer,
     // silent: true,
     tables: true,
     breaks: true,
@@ -68,7 +80,7 @@ var parser = function(string, callback, argvObj, queryObj, commonData) {
         }
     });
     if (json.theme) {
-        json.files = [json.files || '', '/css/theme.' + json.theme + '.css'].join(',');
+        json.files = [json.files || '', json.base + '/css/theme.' + json.theme + '.css'].join(',');
     }
 
     if (json.files) {

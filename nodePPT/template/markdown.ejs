@@ -7,6 +7,7 @@
     <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="<%=base%>/css/phone.css">
     <link rel="stylesheet" media="print" href="<%=base%>/css/pdf.css">
     <link rel="stylesheet" href="<%=base%>/js/highlight/styles/<%if (hasOwnProperty('highlightStyle') && highlightStyle!=='') { %><%- highlightStyle %><% }else{%>monokai_sublime<%}%>.css">
+    <link rel="stylesheet" href="<%=base%>/css/mermaid.css">
 </head>
 <body>
 <div class="slides">
@@ -17,12 +18,12 @@
                 <h2>Q &amp; A</h2>
                 <h3>&lt;Thank You!&gt;</h3>
             </article>
-        </slide-->
         <slide class="slide logoslide dark nobackground">
             <article class="flexbox vcenter">
               <h2 style="color: white;">Powered By nodePPT v<%= nodeppt_version %></h2>
             </article>
           </slide>
+        </slide-->
         <div class="slideTip" id="tip"></div>
     </slides>
 </div>
@@ -94,8 +95,30 @@ MixJS.loadJS('<%=base%>/js/highlight/hljs-0.8.js',function(){
     hljs.tabReplace = '  ';
     hljs.initHighlightingOnLoad();
 });
+
+if (document.getElementsByClassName('mermaid').length) {
+    MixJS.loadJS('<%=base%>/js/mermaid.min.js',function(){
+        var config = {
+            startOnLoad:true,
+            flowchart:{
+                    useMaxWidth:false,
+                    htmlLabels:true
+            }
+        };
+        mermaid.initialize(config);
+    });
+}
+var echartsDiv = document.getElementsByClassName('echarts');
+if (echartsDiv.length) {
+    MixJS.loadJS('<%=base%>/js/echarts.min.js',function(){
+        [].slice.call(echartsDiv).forEach(function (div) {
+            var option = eval('({' + div.innerHTML + '})');
+            echarts.init(div).setOption(option);
+        });
+    });
+}
 </script>
-<%- files %>
+<%= files %>
 <!--placeholder-->
 </body>
 </html>
