@@ -2,7 +2,7 @@
   "name": "mdppt",
   "main": "nodePPT/index.js",
   "description": "A simple, in-browser, markdown-driven presentation framework",
-  "version": "0.4.0",
+  "version": "0.4.3",
   "site": "https://github.com/ksky521/nodePPT",
   "author": {
     "name": "Theo Wang",
